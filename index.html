@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>قيد استراحتنا — تطبيق البلوت والهند</title>
+  <meta name="description" content="احسب نقاط البلوت والهند بسهولة. تطبيق قيد استراحتنا — الرفيق الأمثل لجلساتك." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ═══════════════════════════════════════════════
+       VARIABLES & RESET
+    ═══════════════════════════════════════════════ */
+    :root {
+      --green:        #1B7A3D;
+      --green-light:  #2E8B4E;
+      --green-dark:   #0F5C2A;
+      --green-glow:   rgba(27,122,61,.35);
+      --gold:         #D4AF37;
+      --gold-light:   #F0D060;
+      --bg:           #080F09;
+      --bg-2:         #0D1B0E;
+      --glass:        rgba(255,255,255,.045);
+      --glass-border: rgba(255,255,255,.09);
+      --white:        #FFFFFF;
+      --white-70:     rgba(255,255,255,.7);
+      --white-40:     rgba(255,255,255,.4);
+      --white-15:     rgba(255,255,255,.15);
+      --radius-lg:    24px;
+      --radius-xl:    36px;
+      --transition:   .65s cubic-bezier(.22,1,.36,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    ul { list-style: none; }
+
+
+    /* ═══════════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; inset-inline: 0; z-index: 100;
+      padding: 18px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background .4s, backdrop-filter .4s, border-color .4s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(8,15,9,.75);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-color: var(--glass-border);
+    }
+    .nav-logo { display: flex; align-items: center; gap: 12px; }
+    .nav-logo img { width: 40px; height: 40px; border-radius: 10px; }
+    .nav-logo span { font-size: 1.1rem; font-weight: 800; color: var(--white); }
+
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a {
+      font-size: .9rem; font-weight: 500; color: var(--white-70);
+      transition: color .3s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      background: var(--green); color: var(--white);
+      padding: 10px 24px; border-radius: 100px;
+      font-size: .9rem; font-weight: 700;
+      transition: transform .3s, box-shadow .3s, background .3s;
+      box-shadow: 0 4px 20px var(--green-glow);
+    }
+    .nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px var(--green-glow);
+      background: var(--green-light);
+    }
+
+    @media(max-width:768px){
+      nav { padding: 16px 20px; }
+      .nav-links { display:none; }
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════ */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 120px 24px 80px;
+      position: relative; overflow: hidden;
+      text-align: center;
+    }
+
+    /* — Gradient mesh background — */
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(27,122,61,.5) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 90%, rgba(212,175,55,.15) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 10% 80%, rgba(27,122,61,.2) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* — Animated grid — */
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(27,122,61,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(27,122,61,.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 100%);
+      animation: gridPulse 6s ease-in-out infinite;
+    }
+    @keyframes gridPulse {
+      0%,100% { opacity: .5; }
+      50%      { opacity: 1; }
+    }
+
+    /* — Floating orbs — */
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); pointer-events: none; opacity: .35;
+      animation: orbFloat 10s ease-in-out infinite;
+    }
+    .orb-1 { width:500px; height:500px; background:var(--green); top:-150px; left:-100px; animation-delay:0s; }
+    .orb-2 { width:400px; height:400px; background:var(--gold); bottom:-100px; right:-80px; animation-delay:-3s; opacity:.12; }
+    .orb-3 { width:300px; height:300px; background:var(--green-light); top:40%; right:5%; animation-delay:-6s; opacity:.2; }
+    @keyframes orbFloat {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-40px) scale(1.05); }
+    }
+
+    /* — Floating playing cards — */
+    .cards-container {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+    }
+    .float-card {
+      position: absolute;
+      width: 52px; height: 72px;
+      background: white;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; font-weight: 900;
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+      opacity: 0;
+      animation: cardFloat 12s ease-in-out infinite;
+    }
+    .float-card.red { color: #E53935; }
+    .float-card.black { color: #1A1A1A; }
+
+    .float-card:nth-child(1){ top:15%; left:8%;  animation-delay:0s;   animation-duration:13s; }
+    .float-card:nth-child(2){ top:65%; left:5%;  animation-delay:-2s;  animation-duration:11s; }
+    .float-card:nth-child(3){ top:25%; right:7%; animation-delay:-4s;  animation-duration:14s; }
+    .float-card:nth-child(4){ top:70%; right:8%; animation-delay:-6s;  animation-duration:10s; }
+    .float-card:nth-child(5){ top:45%; left:3%;  animation-delay:-8s;  animation-duration:15s; }
+    .float-card:nth-child(6){ top:80%; right:4%; animation-delay:-1s;  animation-duration:12s; }
+
+    @keyframes cardFloat {
+      0%   { opacity:0; transform: translateY(40px) rotate(-15deg); }
+      15%  { opacity:.6; }
+      50%  { transform: translateY(-20px) rotate(8deg); opacity:.5; }
+      85%  { opacity:.5; }
+      100% { opacity:0; transform: translateY(-60px) rotate(15deg); }
+    }
+
+    /* — App icon — */
+    .hero-icon-wrap {
+      position: relative; width: 160px; height: 160px; margin: 0 auto 36px;
+      z-index: 2;
+    }
+    .hero-icon-wrap::before {
+      content: '';
+      position: absolute; inset: -20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--green-glow) 0%, transparent 70%);
+      animation: iconGlow 3s ease-in-out infinite;
+    }
+    @keyframes iconGlow {
+      0%,100% { transform: scale(1); opacity: .6; }
+      50%      { transform: scale(1.1); opacity: 1; }
+    }
+    .hero-icon-wrap img {
+      width: 160px; height: 160px;
+      border-radius: 36px;
+      box-shadow: 0 24px 80px rgba(27,122,61,.5), 0 8px 24px rgba(0,0,0,.6);
+      position: relative; z-index: 1;
+    }
+
+    /* — Badge — */
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(27,122,61,.18);
+      border: 1px solid rgba(27,122,61,.4);
+      border-radius: 100px;
+      padding: 6px 16px; margin-bottom: 20px;
+      font-size: .82rem; font-weight: 600; color: var(--green-light);
+      backdrop-filter: blur(12px);
+      z-index: 2; position: relative;
+    }
+    .hero-badge span.dot {
+      width: 7px; height: 7px; background: var(--green-light);
+      border-radius: 50%; animation: dotBlink 2s ease-in-out infinite;
+    }
+    @keyframes dotBlink {
+      0%,100% { opacity:1; } 50% { opacity:.3; }
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      z-index: 2; position: relative;
+      margin-bottom: 12px;
+    }
+    .hero-title .highlight {
+      background: linear-gradient(135deg, var(--green-light), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--white-70); font-weight: 400;
+      max-width: 480px; line-height: 1.6;
+      z-index: 2; position: relative;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      justify-content: center; z-index: 2; position: relative;
+    }
+
+    .btn-appstore {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: white; color: #0A0A0A;
+      padding: 14px 28px; border-radius: 16px;
+      font-size: 1rem; font-weight: 700;
+      transition: transform .3s, box-shadow .3s;
+      box-shadow: 0 8px 32px rgba(255,255,255,.15);
+    }
+    .btn-appstore:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 16px 48px rgba(255,255,255,.2); }
+    .btn-appstore svg { width:24px; height:24px; flex-shrink:0; }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1.5px solid var(--glass-border);
+      padding: 14px 28px; border-radius: 16px;
+      font-size: 1rem; font-weight: 600; color: var(--white-70);
+      backdrop-filter: blur(12px);
+      transition: border-color .3s, color .3s, transform .3s;
+    }
+    .btn-outline:hover { border-color: var(--green); color: var(--white); transform: translateY(-2px); }
+
+    /* — Scroll indicator — */
+    .scroll-hint {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: .4; animation: hintBob 2.5s ease-in-out infinite;
+      z-index: 2;
+    }
+    .scroll-hint span { font-size: .75rem; color: var(--white-70); }
+    .scroll-hint svg { width:20px; height:20px; }
+    @keyframes hintBob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(8px); }
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       SECTION SHARED
+    ═══════════════════════════════════════════════ */
+    section { padding: 120px 24px; position: relative; }
+
+    .section-label {
+      display: inline-block;
+      font-size: .78rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--green-light);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4.5vw, 3.2rem);
+      font-weight: 900; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--white-70);
+      max-width: 560px; line-height: 1.7;
+    }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(48px);
+      transition: opacity .8s var(--transition), transform .8s var(--transition);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+    .reveal-delay-4 { transition-delay: .4s; }
+    .reveal-delay-5 { transition-delay: .5s; }
+    .reveal-scale {
+      opacity: 0; transform: scale(.92);
+      transition: opacity .8s var(--transition), transform .8s var(--transition);
+    }
+    .reveal-scale.visible { opacity:1; transform: scale(1); }
+
+
+    /* ═══════════════════════════════════════════════
+       FEATURES
+    ═══════════════════════════════════════════════ */
+    #features {
+      background: var(--bg-2);
+    }
+    #features::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(27,122,61,.12) 0%, transparent 70%);
+      pointer-events:none;
+    }
+
+    .features-header { text-align: center; margin-bottom: 72px; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1100px; margin: 0 auto;
+    }
+
+    .feat-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      position: relative; overflow: hidden;
+      transition: transform .4s var(--transition), border-color .4s, box-shadow .4s;
+      cursor: default;
+    }
+    .feat-card::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(27,122,61,.12) 0%, transparent 60%);
+      opacity:0; transition: opacity .4s;
+    }
+    .feat-card:hover { transform: translateY(-6px); border-color: rgba(27,122,61,.4); box-shadow: 0 24px 60px rgba(0,0,0,.4); }
+    .feat-card:hover::before { opacity:1; }
+
+    .feat-icon {
+      width: 60px; height: 60px;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px var(--green-glow);
+      transition: transform .3s;
+    }
+    .feat-card:hover .feat-icon { transform: scale(1.08) rotate(3deg); }
+
+    .feat-card h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 10px; }
+    .feat-card p { font-size: .95rem; color: var(--white-70); line-height: 1.7; }
+
+    .feat-badge {
+      position: absolute; top: 20px; left: 20px;
+      background: rgba(212,175,55,.15);
+      border: 1px solid rgba(212,175,55,.3);
+      color: var(--gold); font-size: .72rem; font-weight: 700;
+      padding: 4px 10px; border-radius: 100px;
+    }
+
+
+    /* ═══════════════════════════════════════════════
+       STATS
+    ═══════════════════════════════════════════════ */
+    #stats {
+      padding: 80px 24px;
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 48px; max-width: 800px; margin: 0 auto; text-align: center;
+    }
+    .stat-item h3 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--green-light), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-item p { font-size: .9rem; color: var(--white-70); margin-top: 6px; font-weight: 500; }
+
+
+    /* ═══════════════════════════════════════════════
+       PREMIUM
+    ═══════════════════════════════════════════════ */
+    #premium {
+      background: var(--bg);
+      overflow: hidden;
+    }
+    #premium::before {
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(212,175,55,.07) 0%, transparent 70%);
+      pointer-events:none;
+    }
+
+    .premium-inner {
+      max-width: 1000px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    @media(max-width:768px){ .premium-inner { grid-template-columns:1fr; gap:40px; text-align:center; } }
+
+    .premium-card {
+      background: linear-gradient(145deg, rgba(212,175,55,.1), rgba(27,122,61,.08));
+      border: 1px solid rgba(212,175,55,.25);
+      border-radius: var(--radius-xl);
+      padding: 40px 32px;
+      position: relative; overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,.5);
+    }
+    .premium-card::before {
+      content:''; position:absolute; top:-60px; right:-60px;
+      width:200px; height:200px; border-radius:50%;
+      background: radial-gradient(circle, rgba(212,175,55,.2) 0%, transparent 70%);
+      pointer-events:none;
+    }
+
+    .premium-logo {
+      font-size: 2rem; font-weight: 900;
+      color: var(--gold); margin-bottom: 24px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .premium-logo svg { width:28px; height:28px; }
+
+    .plan-row {
+      display: flex; gap: 12px; margin-bottom: 24px;
+    }
+    .plan-pill {
+      flex:1; padding: 16px 12px;
+      border-radius: 14px;
+      text-align: center; cursor: pointer;
+      transition: all .3s;
+    }
+    .plan-pill.active {
+      background: rgba(27,122,61,.25);
+      border: 1.5px solid var(--green);
+    }
+    .plan-pill.inactive {
+      background: rgba(255,255,255,.04);
+      border: 1px solid var(--glass-border);
+    }
+    .plan-pill .price { font-size: 1.3rem; font-weight: 900; color: var(--gold); }
+    .plan-pill .period { font-size: .75rem; color: var(--white-70); }
+    .plan-pill .save-tag {
+      display:inline-block; background:var(--green); color:#fff;
+      font-size: .65rem; font-weight:700; padding:2px 7px; border-radius:6px;
+      margin-top:4px;
+    }
+
+    .perks { display:flex; flex-direction:column; gap:12px; margin-bottom:28px; }
+    .perk { display:flex; align-items:center; gap:10px; font-size:.9rem; color:var(--white-70); }
+    .perk svg { color: var(--green-light); flex-shrink:0; }
+
+    .btn-gold {
+      width:100%; padding:16px;
+      background: linear-gradient(135deg, var(--gold), #B8960C);
+      color: #0A0A0A; font-size:1rem; font-weight:800;
+      border:none; border-radius:14px; cursor:pointer;
+      transition: transform .3s, box-shadow .3s;
+      box-shadow: 0 8px 28px rgba(212,175,55,.35);
+      font-family: 'Tajawal', sans-serif;
+    }
+    .btn-gold:hover { transform:translateY(-2px); box-shadow:0 14px 40px rgba(212,175,55,.45); }
+
+    .premium-text .section-label { display:block; }
+
+
+    /* ═══════════════════════════════════════════════
+       HOW IT WORKS
+    ═══════════════════════════════════════════════ */
+    #how {
+      background: var(--bg-2);
+    }
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px; max-width: 1000px; margin: 60px auto 0;
+      counter-reset: steps;
+    }
+    .step {
+      text-align: center; padding: 32px 20px;
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      transition: transform .4s var(--transition);
+    }
+    .step:hover { transform: translateY(-5px); }
+    .step-num {
+      width:52px; height:52px; border-radius:50%;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; font-weight:900; margin:0 auto 20px;
+      box-shadow: 0 6px 20px var(--green-glow);
+    }
+    .step h3 { font-size:1.05rem; font-weight:800; margin-bottom:8px; }
+    .step p { font-size:.875rem; color:var(--white-70); line-height:1.65; }
+
+
+    /* ═══════════════════════════════════════════════
+       PRIVACY POLICY
+    ═══════════════════════════════════════════════ */
+    #privacy {
+      background: var(--bg);
+      border-top: 1px solid var(--glass-border);
+    }
+    .privacy-wrap {
+      max-width: 780px; margin: 0 auto;
+    }
+    .privacy-wrap h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900; margin-bottom: 12px;
+    }
+    .privacy-wrap .updated {
+      font-size: .85rem; color: var(--white-40); margin-bottom: 48px;
+    }
+
+    .policy-section { margin-bottom: 48px; }
+    .policy-section h2 {
+      font-size: 1.25rem; font-weight: 800;
+      color: var(--green-light); margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .policy-section p, .policy-section li {
+      font-size: .95rem; color: var(--white-70);
+      line-height: 1.8; margin-bottom: 10px;
+    }
+    .policy-section ul { padding-right: 20px; }
+    .policy-section li { list-style: disc; }
+    .policy-section a { color: var(--green-light); border-bottom: 1px solid rgba(46,139,78,.4); }
+    .policy-section a:hover { border-color: var(--green-light); }
+
+    .policy-highlight {
+      background: rgba(27,122,61,.1);
+      border: 1px solid rgba(27,122,61,.25);
+      border-radius: 14px;
+      padding: 20px 24px;
+      margin: 24px 0;
+    }
+    .policy-highlight p { margin:0; }
+
+
+    /* ═══════════════════════════════════════════════
+       SUPPORT
+    ═══════════════════════════════════════════════ */
+    #support {
+      background: var(--bg-2);
+      border-top: 1px solid var(--glass-border);
+    }
+    .support-inner {
+      max-width: 640px; margin: 0 auto; text-align: center;
+    }
+    .support-cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+      margin-top: 48px;
+    }
+    @media(max-width:500px){ .support-cards { grid-template-columns:1fr; } }
+    .support-card {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg); padding: 28px 20px;
+      text-align: center;
+      transition: transform .3s, border-color .3s;
+    }
+    .support-card:hover { transform: translateY(-4px); border-color: rgba(27,122,61,.4); }
+    .support-card .s-icon {
+      width:48px; height:48px; border-radius:12px;
+      background: rgba(27,122,61,.15);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.4rem; margin:0 auto 14px;
+    }
+    .support-card h3 { font-size:.95rem; font-weight:800; margin-bottom:6px; }
+    .support-card p { font-size:.82rem; color:var(--white-70); }
+    .support-card a { color: var(--green-light); font-size:.85rem; font-weight:600; display:block; margin-top:10px; }
+
+
+    /* ═══════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════ */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--glass-border);
+      padding: 48px 24px 32px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 24px;
+    }
+    .footer-logo { display:flex; align-items:center; gap:12px; }
+    .footer-logo img { width:36px; height:36px; border-radius:8px; }
+    .footer-logo span { font-size:1rem; font-weight:800; color:var(--white-70); }
+
+    .footer-links { display:flex; gap:24px; flex-wrap:wrap; }
+    .footer-links a { font-size:.85rem; color:var(--white-40); transition:color .3s; }
+    .footer-links a:hover { color:var(--white-70); }
+
+    .footer-copy { font-size:.8rem; color:var(--white-40); width:100%; text-align:center; margin-top:24px; }
+
+    /* ═══════════════════════════════════════════════
+       MOBILE NAV TOGGLE
+    ═══════════════════════════════════════════════ */
+    .menu-btn {
+      display: none; background:none; border:none; cursor:pointer;
+      color: var(--white); padding:8px;
+    }
+    @media(max-width:768px){ .menu-btn { display:block; } }
+
+    /* ═══════════════════════════════════════════════
+       SMOOTH CURSOR GLOW (desktop only)
+    ═══════════════════════════════════════════════ */
+    .cursor-glow {
+      position: fixed; pointer-events:none; z-index:9999;
+      width:400px; height:400px; border-radius:50%;
+      background: radial-gradient(circle, rgba(27,122,61,.08) 0%, transparent 70%);
+      transform: translate(-50%,-50%);
+      transition: left .12s, top .12s;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- ══════════ NAV ══════════ -->
+  <nav id="mainNav">
+    <div class="nav-logo">
+      <img src="logo.png" alt="قيد استراحتنا" />
+      <span>قيد استراحتنا</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">المميزات</a></li>
+      <li><a href="#premium">استراحتنا+</a></li>
+      <li><a href="privacy.html">الخصوصية</a></li>
+      <li><a href="support.html">الدعم</a></li>
+    </ul>
+    <a href="#" class="nav-cta">حمّل التطبيق</a>
+    <button class="menu-btn" aria-label="القائمة">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </nav>
+
+
+  <!-- ══════════ HERO ══════════ -->
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- Floating cards -->
+    <div class="cards-container">
+      <div class="float-card red">A♥</div>
+      <div class="float-card black">A♠</div>
+      <div class="float-card red">K♦</div>
+      <div class="float-card black">K♣</div>
+      <div class="float-card red">Q♥</div>
+      <div class="float-card black">J♠</div>
+    </div>
+
+    <div class="hero-badge reveal">
+      <span class="dot"></span>
+      متاح الآن على App Store
+    </div>
+
+    <div class="hero-icon-wrap reveal reveal-delay-1">
+      <img src="logo.png" alt="قيد استراحتنا" />
+    </div>
+
+    <h1 class="hero-title reveal reveal-delay-2">
+      <span class="highlight">قيد</span> استراحتنا
+    </h1>
+
+    <p class="hero-sub reveal reveal-delay-3">
+      احسب نقاط البلوت والهند بدقة،<br/>
+      وتابع أحوال الجلسة مع أصحابك
+    </p>
+
+    <div class="hero-actions reveal reveal-delay-4">
+      <a href="#" class="btn-appstore">
+        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        حمّل على App Store
+      </a>
+      <a href="#features" class="btn-outline">
+        اكتشف المميزات
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </a>
+    </div>
+
+    <div class="scroll-hint">
+      <span>اسحب للأسفل</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </section>
+
+
+  <!-- ══════════ FEATURES ══════════ -->
+  <section id="features">
+    <div class="features-header">
+      <span class="section-label reveal">المميزات</span>
+      <h2 class="section-title reveal reveal-delay-1">كل ما تحتاجه في<br/>جلسة واحدة</h2>
+      <p class="section-sub reveal reveal-delay-2" style="margin:0 auto">من حساب النقاط إلى العقوبات — تطبيق واحد يكفيك</p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Card 1 -->
+      <div class="feat-card reveal reveal-delay-1">
+        <div class="feat-icon">🃏</div>
+        <h3>قيد البلوت</h3>
+        <p>احسب نقاط الجولات بدقة، تابع موزع الورق، وشاهد سجل كل الجولات بلمحة واحدة.</p>
+      </div>
+      <!-- Card 2 -->
+      <div class="feat-card reveal reveal-delay-2">
+        <div class="feat-icon">🎴</div>
+        <h3>قيد الهند</h3>
+        <p>دعم كامل للعب الفردي والفرق، مع أوضاع متعددة للتسجيل وحساب الخالص تلقائياً.</p>
+      </div>
+      <!-- Card 3 -->
+      <div class="feat-card reveal reveal-delay-3">
+        <div class="feat-icon">🎡</div>
+        <h3>عجلة العقوبات</h3>
+        <p>أضف مرحاً على جلستك — أدر العجلة ليختار التطبيق عقوبة الخاسر من قائمتك.</p>
+      </div>
+      <!-- Card 4 -->
+      <div class="feat-card reveal reveal-delay-1">
+        <div class="feat-icon">🌙</div>
+        <h3>وضع ليلي</h3>
+        <p>تصميم أنيق مريح للعيون في الظلام. مثالي للسهرات الطويلة بدون إجهاد.</p>
+      </div>
+      <!-- Card 5 -->
+      <div class="feat-card reveal reveal-delay-2">
+        <div class="feat-icon">🕰️</div>
+        <h3>سجل اللعبات</h3>
+        <p>عود لأي لعبة سابقة وراجع النتائج — تاريخك الكامل محفوظ تلقائياً.</p>
+      </div>
+      <!-- Card 6 -->
+      <div class="feat-card reveal reveal-delay-3">
+        <div class="feat-badge">جديد</div>
+        <div class="feat-icon">✨</div>
+        <h3>استراحتنا+</h3>
+        <p>اشترك وتخلص من الإعلانات نهائياً. تجربة نقية بدون أي انقطاع.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════ STATS ══════════ -->
+  <section id="stats">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <h3 class="count-up" data-target="5">0</h3>
+        <p>ألعاب مدعومة</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <h3 class="count-up" data-target="6">0</h3>
+        <p>لاعبين بآن واحد</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <h3>∞</h3>
+        <p>جولات بلا حدود</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <h3 class="count-up" data-target="100">0</h3>
+        <p>% مجاني للاستخدام</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════ PREMIUM ══════════ -->
+  <section id="premium">
+    <div class="premium-inner">
+
+      <!-- Text side -->
+      <div class="premium-text">
+        <span class="section-label reveal">استراحتنا+</span>
+        <h2 class="section-title reveal reveal-delay-1">
+          تجربة نقية<br/>
+          <span style="color:var(--gold)">بدون أي إعلانات</span>
+        </h2>
+        <p class="section-sub reveal reveal-delay-2">
+          اشترك في استراحتنا+ واستمتع بالتطبيق كاملاً بدون مقاطعات. دعم مستمر لفريق التطوير.
+        </p>
+        <div class="perks reveal reveal-delay-3" style="margin-top:32px">
+          <div class="perk">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            بدون إعلانات بنر
+          </div>
+          <div class="perk">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            بدون إعلانات مكافئة
+          </div>
+          <div class="perk">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            تجربة لعب سلسة ونقية
+          </div>
+          <div class="perk">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            دعم فريق التطوير
+          </div>
+        </div>
+      </div>
+
+      <!-- Card side -->
+      <div class="reveal-scale">
+        <div class="premium-card">
+          <div class="premium-logo">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            استراحتنا+
+          </div>
+
+          <div class="plan-row">
+            <div class="plan-pill active">
+              <div class="price">سنوي</div>
+              <div class="period">الأوفر</div>
+              <div class="save-tag">وفّر ~37%</div>
+            </div>
+            <div class="plan-pill inactive">
+              <div class="price">شهري</div>
+              <div class="period">يجدد تلقائياً</div>
+            </div>
+          </div>
+
+          <div class="perks">
+            <div class="perk">
+              <svg width="16" height="16" fill="none" stroke="var(--green-light)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              بدون إعلانات بنر أو مكافئة
+            </div>
+            <div class="perk">
+              <svg width="16" height="16" fill="none" stroke="var(--green-light)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              إلغاء في أي وقت من App Store
+            </div>
+            <div class="perk">
+              <svg width="16" height="16" fill="none" stroke="var(--green-light)" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              استعادة الاشتراك على أي جهاز
+            </div>
+          </div>
+
+          <button class="btn-gold">اشترك الآن من التطبيق</button>
+          <p style="font-size:.75rem; color:var(--white-40); text-align:center; margin-top:12px; line-height:1.6">
+            يتجدد تلقائياً. يمكن الإلغاء من إعدادات Apple ID.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════ HOW IT WORKS ══════════ -->
+  <section id="how">
+    <div style="text-align:center; margin-bottom:8px">
+      <span class="section-label reveal">كيف يعمل</span>
+      <h2 class="section-title reveal reveal-delay-1">ابدأ في ثلاث خطوات</h2>
+    </div>
+
+    <div class="how-steps">
+      <div class="step reveal reveal-delay-1">
+        <div class="step-num">١</div>
+        <h3>حمّل التطبيق</h3>
+        <p>متاح مجاناً على App Store لأجهزة iPhone وiPad</p>
+      </div>
+      <div class="step reveal reveal-delay-2">
+        <div class="step-num">٢</div>
+        <h3>اختر نوع اللعبة</h3>
+        <p>بلوت أو هند — اضبط عدد اللاعبين والإعدادات</p>
+      </div>
+      <div class="step reveal reveal-delay-3">
+        <div class="step-num">٣</div>
+        <h3>سجّل وتابع</h3>
+        <p>أدخل النقاط بعد كل جولة والتطبيق يتكفل بالباقي</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════ PRIVACY POLICY ══════════ -->
+  <section id="privacy">
+    <div class="privacy-wrap">
+      <span class="section-label reveal">قانوني</span>
+      <h1 class="reveal reveal-delay-1">سياسة الخصوصية</h1>
+      <p class="updated reveal reveal-delay-2">آخر تحديث: فبراير 2025</p>
+
+      <div class="policy-section reveal">
+        <div class="policy-highlight">
+          <p>🔒 نحن نحترم خصوصيتك تماماً. تطبيق <strong>قيد استراحتنا</strong> لا يجمع أي بيانات شخصية تعريفية، ولا يرسل أي معلومات لخوادمنا.</p>
+        </div>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>١. ما البيانات التي نجمعها؟</h2>
+        <p>التطبيق لا يجمع ولا يخزن أي بيانات شخصية خارج جهازك. كل ما يتم تخزينه (إعدادات اللعبة، أسماء اللاعبين، سجل الألعاب) يبقى على جهازك المحلي فقط ولا يُرسل لأي خادم.</p>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>٢. خدمات الطرف الثالث</h2>
+        <p>يستخدم التطبيق الخدمات التالية التي قد تجمع بيانات وفق سياساتها الخاصة:</p>
+        <ul>
+          <li><strong>Google AdMob</strong> — لعرض الإعلانات. يجمع AdMob بيانات مجهولة الهوية لتخصيص الإعلانات وفق <a href="https://policies.google.com/privacy" target="_blank">سياسة خصوصية Google</a>.</li>
+          <li><strong>Apple App Store / StoreKit</strong> — لمعالجة الاشتراكات داخل التطبيق. تخضع لـ <a href="https://www.apple.com/legal/privacy/ar/" target="_blank">سياسة خصوصية Apple</a>.</li>
+          <li><strong>Google Fonts</strong> — لتحميل الخطوط في هذه الصفحة فقط (لا يتعلق بالتطبيق).</li>
+        </ul>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>٣. الإعلانات</h2>
+        <p>يعرض التطبيق إعلانات عبر Google AdMob. هذه الإعلانات قد تستخدم معرّف الإعلان (IDFA) لتقديم إعلانات مناسبة. يمكنك تعطيل التتبع الإعلاني من:</p>
+        <ul>
+          <li>الإعدادات ← الخصوصية والأمان ← التتبع</li>
+          <li>الإعدادات ← الخصوصية والأمان ← Apple Advertising</li>
+        </ul>
+        <p>المشتركون في <strong>استراحتنا+</strong> لا يرون أي إعلانات.</p>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>٤. الاشتراكات</h2>
+        <p>اشتراكات استراحتنا+ تُعالَج بالكامل عبر Apple App Store. لا نحتفظ بأي بيانات دفع أو بطاقات ائتمان. لإدارة اشتراكك أو إلغائه:</p>
+        <ul>
+          <li>الإعدادات ← اسمك ← الاشتراكات</li>
+        </ul>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>٥. البيانات المحلية</h2>
+        <p>التطبيق يحفظ محلياً على جهازك:</p>
+        <ul>
+          <li>إعدادات التطبيق (الوضع الليلي، الصوت، إلخ)</li>
+          <li>سجل الألعاب السابقة</li>
+          <li>أسماء اللاعبين وقائمة العقوبات</li>
+        </ul>
+        <p>هذه البيانات لا تغادر جهازك ويمكن مسحها في أي وقت بحذف التطبيق.</p>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>٦. أمان البيانات</h2>
+        <p>نظراً لأن التطبيق لا يرسل بيانات لخوادمنا، فإن أمان بياناتك يعتمد على أمان جهازك. ننصح بتفعيل رمز المرور وميزة Face ID / Touch ID لحماية جهازك.</p>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>٧. الأطفال</h2>
+        <p>تطبيق قيد استراحتنا مناسب لجميع الأعمار. لا نجمع أي معلومات خاصة بالأطفال دون موافقة ولي الأمر. الإعلانات المعروضة تأتي من Google AdMob وفق سياساتها المتعلقة بالمحتوى المناسب.</p>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>٨. التغييرات على السياسة</h2>
+        <p>قد نحدّث هذه السياسة بين الحين والآخر. سنعلمك بأي تغييرات جوهرية من خلال تحديث تاريخ "آخر تحديث" أعلى الصفحة. استمرارك في استخدام التطبيق بعد التغييرات يعني موافقتك عليها.</p>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>٩. حقوقك</h2>
+        <p>يحق لك في أي وقت:</p>
+        <ul>
+          <li>معرفة ما يجمعه التطبيق (الجواب: لا شيء يُرسل خارج جهازك)</li>
+          <li>حذف جميع بياناتك المحلية (بحذف التطبيق)</li>
+          <li>إلغاء اشتراكك من App Store</li>
+        </ul>
+      </div>
+
+      <div class="policy-section reveal">
+        <h2>١٠. التواصل</h2>
+        <p>لأي استفسارات متعلقة بالخصوصية، تواصل معنا عبر:</p>
+        <p>📧 <a href="mailto:ido.mejoo@gmail.com">ido.mejoo@gmail.com</a></p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════ SUPPORT ══════════ -->
+  <section id="support">
+    <div class="support-inner">
+      <span class="section-label reveal">الدعم الفني</span>
+      <h2 class="section-title reveal reveal-delay-1">كيف نساعدك؟</h2>
+      <p class="section-sub reveal reveal-delay-2" style="margin:0 auto">
+        فريقنا جاهز للإجابة على أسئلتك واقتراحاتك
+      </p>
+
+      <div class="support-cards">
+        <div class="support-card reveal reveal-delay-1">
+          <div class="s-icon">📧</div>
+          <h3>البريد الإلكتروني</h3>
+          <p>ردّ خلال 24-48 ساعة</p>
+          <a href="mailto:ido.mejoo@gmail.com">ido.mejoo@gmail.com</a>
+        </div>
+        <div class="support-card reveal reveal-delay-2">
+          <div class="s-icon">⭐</div>
+          <h3>تقييم التطبيق</h3>
+          <p>رأيك يساعدنا على التحسين</p>
+          <a href="#">قيّمنا على App Store</a>
+        </div>
+        <div class="support-card reveal reveal-delay-3" style="grid-column:span 2">
+          <div class="s-icon">💡</div>
+          <h3>اقتراح ميزة جديدة</h3>
+          <p>عندك فكرة تحسّن التطبيق؟ أرسل لنا وسنأخذها بجدية</p>
+          <a href="mailto:ido.mejoo@gmail.com?subject=اقتراح ميزة جديدة">أرسل اقتراحك</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="logo.png" alt="قيد استراحتنا" />
+        <span>قيد استراحتنا</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#features">المميزات</a></li>
+        <li><a href="#premium">استراحتنا+</a></li>
+        <li><a href="privacy.html">سياسة الخصوصية</a></li>
+        <li><a href="support.html">الدعم الفني</a></li>
+        <li><a href="mailto:ido.mejoo@gmail.com">تواصل معنا</a></li>
+      </ul>
+    </div>
+    <p class="footer-copy">
+      © 2025 قيد استراحتنا · جميع الحقوق محفوظة
+    </p>
+  </footer>
+
+
+  <!-- ══════════ JAVASCRIPT ══════════ -->
+  <script>
+    /* ── Navbar scroll ── */
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+
+    /* ── Cursor glow (desktop) ── */
+    const glow = document.getElementById('cursorGlow');
+    if (window.matchMedia('(pointer:fine)').matches) {
+      document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top  = e.clientY + 'px';
+      }, { passive: true });
+    } else {
+      glow.style.display = 'none';
+    }
+
+
+    /* ── Card tilt on hover ── */
+    document.querySelectorAll('.feat-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const mx = ((e.clientX - r.left) / r.width  * 100).toFixed(1);
+        const my = ((e.clientY - r.top)  / r.height * 100).toFixed(1);
+        card.style.setProperty('--mx', mx + '%');
+        card.style.setProperty('--my', my + '%');
+
+        const rx = ((e.clientY - r.top)  / r.height - .5) * -8;
+        const ry = ((e.clientX - r.left) / r.width  - .5) *  8;
+        card.style.transform = `translateY(-6px) perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = '';
+      });
+    });
+
+
+    /* ── Scroll reveal (Intersection Observer) ── */
+    const revealEls = document.querySelectorAll('.reveal, .reveal-scale');
+    const revealIO  = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealIO.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -48px 0px' });
+    revealEls.forEach(el => revealIO.observe(el));
+
+
+    /* ── Count-up animation ── */
+    function animateCount(el) {
+      const target  = parseInt(el.dataset.target);
+      const dur     = 1800;
+      const start   = performance.now();
+      const tick = now => {
+        const pct = Math.min((now - start) / dur, 1);
+        const ease = 1 - Math.pow(1 - pct, 4); // ease-out quart
+        el.textContent = Math.floor(ease * target);
+        if (pct < 1) requestAnimationFrame(tick);
+        else el.textContent = target;
+      };
+      requestAnimationFrame(tick);
+    }
+
+    const countIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animateCount(e.target);
+          countIO.unobserve(e.target);
+        }
+      });
+    }, { threshold: .5 });
+    document.querySelectorAll('.count-up').forEach(el => countIO.observe(el));
+
+
+    /* ── Parallax hero (subtle) ── */
+    const heroEl = document.getElementById('hero');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroEl.querySelectorAll('.orb').forEach((o, i) => {
+          const speed = (i + 1) * 0.08;
+          o.style.transform = `translateY(${y * speed}px) scale(1)`;
+        });
+      }
+    }, { passive: true });
+
+
+    /* ── Premium plan toggle ── */
+    document.querySelectorAll('.plan-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.plan-pill').forEach(p => {
+          p.classList.remove('active');
+          p.classList.add('inactive');
+        });
+        pill.classList.remove('inactive');
+        pill.classList.add('active');
+      });
+    });
+
+
+    /* ── Smooth anchor links ── */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+
+    /* ── Initial hero elements animate in ── */
+    window.addEventListener('load', () => {
+      document.querySelectorAll('#hero .reveal').forEach((el, i) => {
+        setTimeout(() => el.classList.add('visible'), 200 + i * 120);
+      });
+    });
+  </script>
+
+</body>
+</html>
